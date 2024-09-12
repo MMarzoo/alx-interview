@@ -2,6 +2,8 @@
 """
 2D matrix rotation module.
 """
+
+
 def rotate_2d_matrix(matrix):
     """
     2D matrix, rotate it 90 degrees clockwise.
@@ -13,6 +15,8 @@ def rotate_2d_matrix(matrix):
             matrix[i][j] = matrix[j][i]
             matrix[j][i] = matrix[i][j]
     # Step 2: Reverse each row to complete the 90-degree clockwise rotation
+    for i in range(n):
+        matrix[i].reverse()
+
     for row in matrix:
-        row.reverse()
-        return matrix
+        print(row)
