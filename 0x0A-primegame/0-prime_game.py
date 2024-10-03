@@ -42,8 +42,9 @@ def isWinner(x, nums):
 
         while primes_in_game:
             current_prime = primes_in_game[0]
-            primes_in_game = [p for p in primes_in_game
-                              if p % current_prime != 0]
+            primes_in_game = [
+                p for p in primes_in_game if p % current_prime != 0
+                ]
             turn ^= 1  # Switch turns
 
         if turn == 1:
