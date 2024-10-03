@@ -1,61 +1,31 @@
-#!/usr/bin/python3
-"""
-Prime_Game
-"""
-
-
-def SieveOfEratosthenes(n):
-    """Returns a list of prime numbers up to
-    n using the Sieve of Eratosthenes."""
-    primes = [True] * (n + 1)
-    primes[0], primes[1] = False, False
-
-    p = 2
-    while (p * p <= n):
-        if primes[p]:
-            for i in range(p * p, n + 1, p):
-                primes[i] = False
-        p += 1
-
-    return [i for i in range(n + 1) if primes[i]]
-
-
 def isWinner(x, nums):
-    """Determines who wins the most rounds between Maria and Ben."""
-    if not nums or x <= 0:
-        return None
+    """
+    Determines the winner in the prime game using
+    Eratosthenes prime sieving algorithm
+    """
+    Ben = 0
+    Maria = 0
 
-    max_n = max(nums)
-    primes = SieveOfEratosthenes(max_n)
-    prime_set = set(primes)
-
-    maria_wins = 0
-    ben_wins = 0
-
-    for n in nums:
-        primes_in_game = [p for p in primes if p <= n]
-        if not primes_in_game:
-            ben_wins += 1
-            continue
-
-        turn = 0
-
-        while primes_in_game:
-            current_prime = primes_in_game[0]
-            primes_in_game = [
-                p for p in primes_in_game if p % current_prime != 0
-                ]
-            turn ^= 1  # Switch turns
-
-        if turn == 1:
-            maria_wins += 1
+    for round in range(x):
+        playing_numbers = [num for num in range(2, nums[round] + 1)]
+        index = 0
+        # Sieve prime numbers per round
+        while (index < len(playing_numbers)):
+            current_prime = playing_numbers[index]
+            sieve_index = index + current_prime
+            while(sieve_index < len(playing_numbers)):
+                playing_numbers.pop(sieve_index)
+                sieve_index += current_prime - 1
+            index += 1
+        # Determine winner - if number of primes is even player 1 wins
+        # else player 2 wins. Player 2  also wins if there is only one
+        # number to pick from
+        prime_count = (len(playing_numbers))
+        if prime_count and prime_count % 2:
+            Maria += 1
         else:
-            ben_wins += 1
+            Ben += 1
 
-    # Determine the overall winner
-    if maria_wins > ben_wins:
-        return "Maria"
-    elif ben_wins > maria_wins:
-        return "Ben"
-    else:
+    if Ben == Maria:
         return None
+    return 'Ben' if Ben > Maria else 'Maria'
